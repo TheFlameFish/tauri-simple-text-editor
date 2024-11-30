@@ -39,9 +39,16 @@ html, body, #root {
   min-height: 100vh;
 }
 
+.footer {
+  height: 25px;
+  display: flex;
+
+  background-color: var(--darker-background);
+}
+
 .toolbar {
   display: flex;
-  height: 2.5vh;
+  height: 25px;
 
   background-color: var(--darker-background);
 }
@@ -86,7 +93,7 @@ html, body, #root {
 .editor {
   resize: none;
   width: 100vw; /* Makes textarea scale horizontally */
-  height: 97.5vh; /* Makes textarea scale vertically */
+  height: 95vh; /* Makes textarea scale vertically */
   margin: auto; /* Center the textarea in the container */
   font-size: 1rem; /* Ensure text is reasonably sized */
   box-sizing: border-box; /* Includes padding in width/height calculation */
