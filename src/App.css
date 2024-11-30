@@ -1,0 +1,86 @@
+/* Ensure the html and body take up the full viewport height */
+html, body, #root {
+  height: 100%;
+  margin: 0; /* Remove any default margin */
+}
+
+:root {
+  font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400;
+
+  --color: #0f0f0f;
+  --background-color: #f6f6f6;
+
+  --darker-background: darkgrey;
+
+  --color-special: blue;
+
+  color: var(--color);
+  background-color: var(--background-color);
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+}
+
+.container {
+  margin: 0;
+  padding-top: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  align-items: stretch;
+
+  min-height: 100vh;
+}
+
+.toolbar {
+  display: flex;
+  height: 2.5vh;
+
+  background-color: var(--darker-background);
+}
+
+.toolbar > button {
+  background: none;
+  border: none;
+
+  color: var(--color);
+}
+
+.toolbar > button:hover {
+  color: var(--color-special);
+}
+
+.editor {
+  resize: none;
+  width: 100vw; /* Makes textarea scale horizontally */
+  height: 97.5vh; /* Makes textarea scale vertically */
+  margin: auto; /* Center the textarea in the container */
+  font-size: 1rem; /* Ensure text is reasonably sized */
+  box-sizing: border-box; /* Includes padding in width/height calculation */
+
+  font-family: Consolas, Arial, Helvetica, sans-serif;
+  padding: 10px;
+  border: none;
+  outline: none;
+
+  color: var(--color);
+  background-color: var(--background-color);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color: #f6f6f6;
+    --background-color: #2f2f2f;
+
+    --darker-background: #1f1f1f;
+
+    --color-special: cyan;
+  }
+}
