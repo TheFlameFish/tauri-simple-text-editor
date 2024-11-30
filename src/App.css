@@ -46,16 +46,42 @@ html, body, #root {
   background-color: var(--darker-background);
 }
 
-.toolbar > button {
+.dropdown_menu {
+  position: relative;
+}
+
+.dropdown_label {
   background: none;
   border: none;
 
   color: var(--color);
 }
 
-.toolbar > button:hover {
+.dropdown_label:hover {
   color: var(--color-special);
 }
+
+.dropdown_content {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+
+  background-color: var(--darker-background);
+  padding: 2px;
+  border-radius: 5px;
+}
+
+.dropdown_content > button {
+  background: none;
+  border: none;
+
+  color: var(--color);
+}
+
+.dropdown_content > button:hover {
+  color: var(--color-special);
+}
+
 
 .editor {
   resize: none;

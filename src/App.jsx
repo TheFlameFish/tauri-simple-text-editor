@@ -4,16 +4,31 @@ import { invoke } from "@tauri-apps/api/core";
 import "./App.css";
 
 function App() {
-  async function greet() {
-    // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-    setGreetMsg(await invoke("greet", { name }));
+  function DropdownMenu({ children }) {
+    const [isOpen, setOpen] = useState(false);
+
+    function handleClick() {
+      setOpen(!isOpen);
+    }
+
+    return (
+      <div className="dropdown_menu" onBlur={() => {setOpen(false)}}>
+        <button className="dropdown_label" onClick={handleClick}>
+          {children}
+        </button>
+        {isOpen && <div className="dropdown_content">
+          <button>Open</button>
+          <button>Save</button>
+        </div>}
+      </div>
+    )
   }
 
   function Toolbar() {
     return (
       <div className="toolbar">
-        <button>File</button>
-        <button>Edit</button>
+        <DropdownMenu>File</DropdownMenu>
+        <DropdownMenu>Edit</DropdownMenu>
       </div>
     )
   }
