@@ -42,8 +42,17 @@ html, body, #root {
 .footer {
   height: 25px;
   display: flex;
+  overflow: hidden;
+  padding-top: 0;
+  
+  font-size: smaller;
 
   background-color: var(--darker-background);
+}
+
+.footer > p {
+  margin-top: 0;
+  margin-left: 5px;
 }
 
 .toolbar {
@@ -93,7 +102,8 @@ html, body, #root {
 .editor {
   resize: none;
   width: 100vw; /* Makes textarea scale horizontally */
-  height: 95vh; /* Makes textarea scale vertically */
+  flex: 1;
+  min-height: 0;
   margin: auto; /* Center the textarea in the container */
   font-size: 1rem; /* Ensure text is reasonably sized */
   box-sizing: border-box; /* Includes padding in width/height calculation */
