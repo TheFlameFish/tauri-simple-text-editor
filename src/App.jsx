@@ -155,14 +155,9 @@ function App() {
   }
 
   function Editor() {
-    const [content, setContent] = useState(
-      sessions[activeSession]?.content || ""
-    );
-
     function handleChange(event) {
       const newContent = event.target.value;
-      // setContent(newContent);
-
+  
       // Sync with global sessions state
       setSessions((prevSessions) => ({
         ...prevSessions,
@@ -171,35 +166,31 @@ function App() {
           content: newContent,
         },
       }));
-      console.log(newContent);
     }
-
-    // Sync when activeSession or sessions change
-    // useEffect(() => {
-    //   if (content != sessions[activeSession]?.content || "") {
-    //     console.log(content, " != ", sessions[activeSession]?.content || "")
-    //     setContent(sessions[activeSession]?.content || "");
-    //   } else {
-    //     console.log(content, " == ", sessions[activeSession]?.content || "")
-    //   }
-    //   console.log("Responded to activeSession change.");
-    // }, [activeSession, sessions]);
-
+  
     return (
       <textarea
         className="editor"
         autoFocus
         value={sessions[activeSession]?.content || ""}
-        onChange={handleChange}
+        onChange={e => setSessions((prevSessions) => ({
+          ...prevSessions,
+          [activeSession]: {
+            ...prevSessions[activeSession],
+            content: e.target.value
+          }
+        }))}
       />
     );
   }
+  
 
   // Application
   return (
+    // I have to call Editor like that otherwise it re-renders every time the user types and I have no idea why.
     <main className="container">
       <Toolbar />
-      <Editor />
+      {Editor()}
       <Footer />
     </main>
   );
