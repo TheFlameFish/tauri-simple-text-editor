@@ -1,8 +1,8 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "simple-text-editor",
+  "productName": "FlameFish Simple Text Editor",
   "version": "0.1.0",
-  "identifier": "com.simple-text-editor.app",
+  "identifier": "io.github.theflamefish.simple-text-editor",
   "build": {
     "beforeDevCommand": "pnpm dev",
     "devUrl": "http://localhost:1420",
@@ -12,7 +12,7 @@
   "app": {
     "windows": [
       {
-        "title": "simple-text-editor",
+        "title": "FlameFish Simple Text Editor",
         "width": 800,
         "height": 600
       }
