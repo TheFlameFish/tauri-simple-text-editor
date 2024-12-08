@@ -7,6 +7,111 @@ import { readTextFile } from "@tauri-apps/plugin-fs";
 import * as path from "@tauri-apps/api/path";
 import "./App.css";
 
+/**
+   * DropdownMenu component renders a dropdown menu with a label and a list of buttons.
+   *
+   * @param {Object} props - The properties object.
+   * @param {string} props.label - The label for the dropdown menu.
+   * @param {Array} props.buttons - The array of button objects to be displayed in the dropdown.
+   * @param {string} props.buttons[].label - The label for each button.
+   * @param {function} props.buttons[].onClick - The onClick handler for each button.
+   *
+   * @returns {JSX.Element} The rendered DropdownMenu component.
+   */
+function DropdownMenu({ label, buttons }) {
+  const [isOpen, setOpen] = useState(false);
+
+  function handleClick() {
+    setOpen(!isOpen);
+  }
+
+  function handleBlur(event) {
+    // Check if the next focused element is inside the dropdown
+    if (!event.currentTarget.contains(event.relatedTarget)) {
+      setOpen(false);
+    }
+  }
+
+  return (
+    <div className="dropdown_menu" onBlur={handleBlur} tabIndex={0}>
+      <button className="dropdown_label" onClick={handleClick}>
+        {label}
+      </button>
+      {isOpen && (
+        <div className="dropdown_content">
+          {buttons.map((button, index) => (
+            <button
+              key={index}
+              onClick={() => {
+                button.onClick();
+                setOpen(false);
+              }}
+            >
+              {button.label}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function Toolbar({ openFile }) {
+  return (
+    <div className="toolbar">
+      <DropdownMenu
+        label="File"
+        buttons={[
+          { label: "Open", onClick: openFile },
+          { label: "Save", onClick: () => console.log("Save clicked") },
+        ]}
+      />
+      <DropdownMenu
+        label="Edit"
+        buttons={[{ label: "foo", onClick: () => null }]}
+      />
+    </div>
+  );
+}
+
+function Footer() {
+  return (
+    <div className="footer">
+      <p>No file open</p>
+    </div>
+  );
+}
+
+function Editor({ sessions, setSessions, activeSession }) {
+  function handleChange(event) {
+    const newContent = event.target.value;
+
+    // Sync with global sessions state
+    setSessions((prevSessions) => ({
+      ...prevSessions,
+      [activeSession]: {
+        ...prevSessions[activeSession],
+        content: newContent,
+      },
+    }));
+  }
+
+  return (
+    <textarea
+      className="editor"
+      autoFocus
+      value={sessions[activeSession]?.content || ""}
+      onChange={e => setSessions((prevSessions) => ({
+        ...prevSessions,
+        [activeSession]: {
+          ...prevSessions[activeSession],
+          content: e.target.value
+        }
+      }))}
+    />
+  );
+}
+
 function App() {
   /* GENERAL FUNCTIONS & SUCH */
   const [sessions, setSessions] = useState({
@@ -75,122 +180,13 @@ function App() {
       "\nActive session: ",
       activeSession
     );
-  }
-
-  /* COMPONENTS */
-
-  /**
-   * DropdownMenu component renders a dropdown menu with a label and a list of buttons.
-   *
-   * @param {Object} props - The properties object.
-   * @param {string} props.label - The label for the dropdown menu.
-   * @param {Array} props.buttons - The array of button objects to be displayed in the dropdown.
-   * @param {string} props.buttons[].label - The label for each button.
-   * @param {function} props.buttons[].onClick - The onClick handler for each button.
-   *
-   * @returns {JSX.Element} The rendered DropdownMenu component.
-   */
-  function DropdownMenu({ label, buttons }) {
-    const [isOpen, setOpen] = useState(false);
-
-    function handleClick() {
-      setOpen(!isOpen);
-    }
-
-    function handleBlur(event) {
-      // Check if the next focused element is inside the dropdown
-      if (!event.currentTarget.contains(event.relatedTarget)) {
-        setOpen(false);
-      }
-    }
-
-    return (
-      <div className="dropdown_menu" onBlur={handleBlur} tabIndex={0}>
-        <button className="dropdown_label" onClick={handleClick}>
-          {label}
-        </button>
-        {isOpen && (
-          <div className="dropdown_content">
-            {buttons.map((button, index) => (
-              <button
-                key={index}
-                onClick={() => {
-                  button.onClick();
-                  setOpen(false);
-                }}
-              >
-                {button.label}
-              </button>
-            ))}
-          </div>
-        )}
-      </div>
-    );
-  }
-
-  function Toolbar() {
-    return (
-      <div className="toolbar">
-        <DropdownMenu
-          label="File"
-          buttons={[
-            { label: "Open", onClick: openFile },
-            { label: "Save", onClick: () => console.log("Save clicked") },
-          ]}
-        />
-        <DropdownMenu
-          label="Edit"
-          buttons={[{ label: "foo", onClick: () => null }]}
-        />
-      </div>
-    );
-  }
-
-  function Footer() {
-    return (
-      <div className="footer">
-        <p>No file open</p>
-      </div>
-    );
-  }
-
-  function Editor() {
-    function handleChange(event) {
-      const newContent = event.target.value;
-  
-      // Sync with global sessions state
-      setSessions((prevSessions) => ({
-        ...prevSessions,
-        [activeSession]: {
-          ...prevSessions[activeSession],
-          content: newContent,
-        },
-      }));
-    }
-  
-    return (
-      <textarea
-        className="editor"
-        autoFocus
-        value={sessions[activeSession]?.content || ""}
-        onChange={e => setSessions((prevSessions) => ({
-          ...prevSessions,
-          [activeSession]: {
-            ...prevSessions[activeSession],
-            content: e.target.value
-          }
-        }))}
-      />
-    );
-  }
-  
+  }  
 
   // Application
   return (
-    // I have to call Editor like that otherwise it re-renders every time the user types and I have no idea why.
     <main className="container">
-      <Toolbar />
-      {Editor()}
+      <Toolbar openFile={openFile} />
+      <Editor sessions={sessions} setSessions={setSessions} activeSession={activeSession}/>
       <Footer />
     </main>
   );
