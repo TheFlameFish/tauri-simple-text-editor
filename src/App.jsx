@@ -74,10 +74,12 @@ function Toolbar({ openFile }) {
   );
 }
 
-function Footer() {
+function Footer({ sessionData }) {
+  const path = sessionData.path ?? "No file open";
+
   return (
     <div className="footer">
-      <p>No file open</p>
+      <p>{path}</p>
     </div>
   );
 }
@@ -187,7 +189,7 @@ function App() {
     <main className="container">
       <Toolbar openFile={openFile} />
       <Editor sessions={sessions} setSessions={setSessions} activeSession={activeSession}/>
-      <Footer />
+      <Footer sessionData={sessions[activeSession]}/>
     </main>
   );
 }
